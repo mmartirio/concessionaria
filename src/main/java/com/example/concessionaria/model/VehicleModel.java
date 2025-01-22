@@ -1,30 +1,34 @@
 package com.example.concessionaria.model;
 
 import jakarta.persistence.*;
+import org.springframework.hateoas.RepresentationModel;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.UUID;
 
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name= "TB_VEHICLES")
+@Table(name = "TB_VEHICLES")
 
 public class VehicleModel extends RepresentationModel<VehicleModel> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType=.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idVehicle;
     private String manufacturer;
     private String model;
-    private int date;
+    private LocalDate date;
     private String color;
     private BigDecimal km;
     private String fuel;
 
-    //Construtor de Veiculos
-    public VehicleModel(UUID idVehicle, String manufacturer, String model, int date, String color, BigDecimal km, String fuel) {
+    public VehicleModel() {
+    }
+
+    public VehicleModel(UUID idVehicle, String manufacturer, String model, LocalDate date, String color, BigDecimal km, String fuel) {
         this.idVehicle = idVehicle;
         this.manufacturer = manufacturer;
         this.model = model;
@@ -58,11 +62,11 @@ public class VehicleModel extends RepresentationModel<VehicleModel> implements S
         this.model = model;
     }
 
-    public int getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(int date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
