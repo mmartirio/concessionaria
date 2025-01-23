@@ -9,3 +9,4 @@ import java.util.UUID;
 @Repository
 public interface MotorcycleRepository extends JpaRepository<MotorcycleModel, UUID> {
 }
+

@@ -5,7 +5,16 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.UUID;
 
-public record VehicleRecordDto(@NotBlank String manufacturer, @NotBlank String model, @NotNull
-LocalDate date, @NotBlank String color, @NotNull BigDecimal km, @NotBlank String fuel) {
-}
+public record VehicleRecordDto(
+        String manufacturer,
+        String model,
+        String date,
+        BigDecimal price,
+        String vehicleType,
+        Integer doors,
+        String fuel,
+        Integer cylinder
+) {}
+

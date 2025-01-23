@@ -1,79 +1,64 @@
 package com.example.concessionaria.Controllers;
 
-import com.example.concessionaria.repository.VehicleRepository;
-import com.example.concessionaria.dtos.VehicleRecordDto;
-import com.example.concessionaria.model.VehicleModel;
-
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.BeanUtils;
-import org.springframework.http.ResponseEntity;
+import com.example.concessionaria.dtos.CarRecordDto;
+import com.example.concessionaria.dtos.MotorcycleRecordDto;
+import com.example.concessionaria.model.CarModel;
+import com.example.concessionaria.model.MotorcycleModel;
+import com.example.concessionaria.services.VehicleService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @RestController
-@RequestMapping("/api/vehicles")
+@RequestMapping("/vehicles")
 public class VehicleController {
 
-    @Autowired
-    private VehicleRepository vehicleRepository;
+    private final VehicleService vehicleService;
 
-    @GetMapping
-    public ResponseEntity<List<VehicleModel>> getAllVehicles() {
-        List<VehicleModel> vehicleList = vehicleRepository.findAll();
-        if (!vehicleList.isEmpty()) {
-            for (VehicleModel vehicle : vehicleList) {
-                UUID id = vehicle.getIdVehicle();
-                vehicle.add(linkTo(methodOn(VehicleController.class).getOneVehicle(id)).withSelfRel());
-            }
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(vehicleList);
+    // Construtor que injeta o serviço VehicleService
+    public VehicleController(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getOneVehicle(@PathVariable(value = "id") UUID id) {
-        Optional<VehicleModel> vehicleO = vehicleRepository.findById(id);
-        if (vehicleO.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found");
-        }
-        VehicleModel vehicle = vehicleO.get();
-        vehicle.add(linkTo(methodOn(VehicleController.class).getAllVehicles()).withRel("all-vehicles"));
-        return ResponseEntity.status(HttpStatus.OK).body(vehicle);
+    // Criação de um Carro
+    @PostMapping("/createCar")
+    public ResponseEntity<CarModel> createCar(@RequestBody CarRecordDto carRecordDto) {
+        CarModel createdCar = vehicleService.createCar(carRecordDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdCar);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateVehicle(@PathVariable(value = "id") UUID id,
-                                                @RequestBody @Valid VehicleRecordDto vehicleRecordDto) {
-        Optional<VehicleModel> vehicleO = vehicleRepository.findById(id);
-        if (vehicleO.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found");
-        }
-        VehicleModel vehicleModel = vehicleO.get();
-        BeanUtils.copyProperties(vehicleRecordDto, vehicleModel, "idVehicle");
-        return ResponseEntity.status(HttpStatus.OK).body(vehicleRepository.save(vehicleModel));
+    // Criação de uma Moto
+    @PostMapping("/createMotorcycle")
+    public ResponseEntity<MotorcycleModel> createMotorcycle(@RequestBody MotorcycleRecordDto motorcycleRecordDto) {
+        MotorcycleModel createdMotorcycle = vehicleService.createMotorcycle(motorcycleRecordDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMotorcycle);
     }
 
-    @PostMapping
-    public ResponseEntity<VehicleModel> createVehicle(@RequestBody @Valid VehicleRecordDto vehicleRecordDto) {
-        VehicleModel vehicleModel = new VehicleModel();
-        BeanUtils.copyProperties(vehicleRecordDto, vehicleModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(vehicleRepository.save(vehicleModel));
+    // Atualização de um Carro
+    @PutMapping("/updateCar/{id}")
+    public ResponseEntity<CarModel> updateCar(@PathVariable UUID id, @RequestBody CarRecordDto carRecordDto) {
+        return vehicleService.updateCar(id, carRecordDto);  // Apenas repassa a chamada para o serviço
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteVehicle(@PathVariable(value = "id") UUID id) {
-        Optional<VehicleModel> vehicleO = vehicleRepository.findById(id);
-        if (vehicleO.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found");
-        }
-        vehicleRepository.delete(vehicleO.get());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Vehicle deleted successfully");
+    // Atualização de uma Moto
+    @PutMapping("/updateMotorcycle/{id}")
+    public MotorcycleModel updateMotorcycle(@PathVariable UUID id, @RequestBody MotorcycleRecordDto motorcycleRecordDto) {
+        return vehicleService.updateMotorcycle(id, motorcycleRecordDto);  // Apenas chama o serviço
+    }
+
+    // Deletar Carro
+    @DeleteMapping("/deleteCar/{id}")
+    public ResponseEntity<Void> deleteCar(@PathVariable UUID id) {
+        vehicleService.deleteCar(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    // Deletar Moto
+    @DeleteMapping("/deleteMotorcycle/{id}")
+    public ResponseEntity<Void> deleteMotorcycle(@PathVariable UUID id) {
+        vehicleService.deleteMotorcycle(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

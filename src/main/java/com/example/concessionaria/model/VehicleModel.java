@@ -1,41 +1,37 @@
 package com.example.concessionaria.model;
 
-import jakarta.persistence.*;
 import org.springframework.hateoas.RepresentationModel;
-import java.io.Serializable;
+
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "TB_VEHICLES")
-
-public class VehicleModel extends RepresentationModel<VehicleModel> implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class VehicleModel extends RepresentationModel<VehicleModel> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idVehicle;
+
     private String manufacturer;
     private String model;
-    private LocalDate date;
-    private String color;
-    private BigDecimal km;
-    private String fuel;
+    private String date;
+    private BigDecimal price;
+    private String vehicleType;
 
     public VehicleModel() {
     }
 
-    public VehicleModel(UUID idVehicle, String manufacturer, String model, LocalDate date, String color, BigDecimal km, String fuel) {
+    public VehicleModel(UUID idVehicle, String manufacturer, String model, String date, BigDecimal price, String vehicleType) {
         this.idVehicle = idVehicle;
         this.manufacturer = manufacturer;
         this.model = model;
         this.date = date;
-        this.color = color;
-        this.km = km;
-        this.fuel = fuel;
+        this.price = price;
+        this.vehicleType = vehicleType;
     }
 
     public UUID getIdVehicle() {
@@ -62,35 +58,27 @@ public class VehicleModel extends RepresentationModel<VehicleModel> implements S
         this.model = model;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public String getColor() {
-        return color;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
-    public BigDecimal getKm() {
-        return km;
+    public String getVehicleType() {
+        return vehicleType;
     }
 
-    public void setKm(BigDecimal km) {
-        this.km = km;
-    }
-
-    public String getFuel() {
-        return fuel;
-    }
-
-    public void setFuel(String fuel) {
-        this.fuel = fuel;
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 }
