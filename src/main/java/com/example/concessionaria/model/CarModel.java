@@ -12,15 +12,17 @@ public class CarModel extends VehicleModel {
     private int doors;
     private double engine;
     private String transmission;
+    private int seats;
 
     public CarModel() {
     }
 
-    public CarModel(UUID idVehicle, String manufacturer, String model, LocalDate date, String color, BigDecimal km, String fuel, int doors, double engine, String transmission) {
+    public CarModel(UUID idVehicle, String manufacturer, String model, LocalDate date, String color, BigDecimal km, String fuel, int doors, double engine, String transmission, int seats) {
         super(idVehicle, manufacturer, model, date, color, km, fuel);
         this.doors = doors;
         this.engine = engine;
         this.transmission = transmission;
+        this.seats = seats;
     }
 
     public int getDoors() {
@@ -46,11 +48,12 @@ public class CarModel extends VehicleModel {
     public void setTransmission(String transmission) {
         this.transmission = transmission;
     }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
 }
-
-
-
-
-
-
-
