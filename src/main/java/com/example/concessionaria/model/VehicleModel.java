@@ -18,18 +18,18 @@ public class VehicleModel extends RepresentationModel<VehicleModel> {
 
     private String manufacturer;
     private String model;
-    private String date;
+    private String year;
     private BigDecimal price;
     private String vehicleType;
 
     public VehicleModel() {
     }
 
-    public VehicleModel(UUID idVehicle, String manufacturer, String model, String date, BigDecimal price, String vehicleType) {
+    public VehicleModel(UUID idVehicle, String manufacturer, String model, String year, BigDecimal price, String vehicleType) {
         this.idVehicle = idVehicle;
         this.manufacturer = manufacturer;
         this.model = model;
-        this.date = date;
+        this.year = year;
         this.price = price;
         this.vehicleType = vehicleType;
     }
@@ -58,12 +58,12 @@ public class VehicleModel extends RepresentationModel<VehicleModel> {
         this.model = model;
     }
 
-    public String getDate() {
-        return date;
+    public String getYear() {
+        return year;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public BigDecimal getPrice() {

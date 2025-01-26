@@ -12,7 +12,7 @@ public class CarModel {
     private UUID idVehicle;
     private String manufacturer;
     private String model;
-    private String date;
+    private String year;
     private BigDecimal price;
     private String fuel;
     private Integer doors;
@@ -20,11 +20,11 @@ public class CarModel {
     public CarModel() {
     }
 
-    public CarModel(UUID idVehicle, String manufacturer, String model, String date, BigDecimal price, String fuel, Integer doors) {
+    public CarModel(UUID idVehicle, String manufacturer, String model, String year, BigDecimal price, String fuel, Integer doors) {
         this.idVehicle = idVehicle;
         this.manufacturer = manufacturer;
         this.model = model;
-        this.date = date;
+        this.year = year;
         this.price = price;
         this.fuel = fuel;
         this.doors = doors;
@@ -54,12 +54,12 @@ public class CarModel {
         this.model = model;
     }
 
-    public String getDate() {
-        return date;
+    public String getYear() {
+        return year;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public BigDecimal getPrice() {

@@ -10,7 +10,7 @@ import java.util.UUID;
 public record VehicleRecordDto(
         String manufacturer,
         String model,
-        String date,
+        String year,
         BigDecimal price,
         String vehicleType,
         Integer doors,

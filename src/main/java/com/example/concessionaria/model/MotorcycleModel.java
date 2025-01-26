@@ -9,37 +9,25 @@ import java.util.UUID;
 public class MotorcycleModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idVehicle;
 
-    @Column(nullable = false)
     private String manufacturer;
-
-    @Column(nullable = false)
     private String model;
-
-    @Column(nullable = false)
-    private String date;
-
-    @Column(nullable = false, precision = 10, scale = 2)
+    private String year;
     private BigDecimal price;
-
-    @Column(nullable = false)
-    private Integer cylinder;
-
-    @Column(nullable = false)
     private String fuel;
+    private BigDecimal cylinder;
 
     public MotorcycleModel() {}
 
-    public MotorcycleModel(UUID idVehicle, String manufacturer, String model, String date, BigDecimal price, Integer cylinder, String fuel) {
+    public MotorcycleModel(UUID idVehicle, String manufacturer, String model, String year, BigDecimal price, String fuel, BigDecimal cylinder) {
         this.idVehicle = idVehicle;
         this.manufacturer = manufacturer;
         this.model = model;
-        this.date = date;
+        this.year = year;
         this.price = price;
-        this.cylinder = cylinder;
         this.fuel = fuel;
+        this.cylinder = cylinder;
     }
 
     public UUID getIdVehicle() {
@@ -66,12 +54,12 @@ public class MotorcycleModel {
         this.model = model;
     }
 
-    public String getDate() {
-        return date;
+    public String getYear() {
+        return year;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public BigDecimal getPrice() {
@@ -82,19 +70,19 @@ public class MotorcycleModel {
         this.price = price;
     }
 
-    public Integer getCylinder() {
-        return cylinder;
-    }
-
-    public void setCylinder(Integer cylinder) {
-        this.cylinder = cylinder;
-    }
-
     public String getFuel() {
         return fuel;
     }
 
     public void setFuel(String fuel) {
         this.fuel = fuel;
+    }
+
+    public BigDecimal getCylinder() {
+        return cylinder;
+    }
+
+    public void setCylinder(BigDecimal cylinder) {
+        this.cylinder = cylinder;
     }
 }

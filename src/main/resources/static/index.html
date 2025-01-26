@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Veículos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>Gestão de Veículos</h1>
+    <button id="addVehicleButton" onclick="openAddVehicleModal()">Adicionar Veículo</button>
+    <input
+            type="text"
+            id="search"
+            placeholder="Buscar veículo"
+            oninput="searchVehicles()"
+            aria-label="Buscar veículo">
+</header>
+
+<table id="vehiclesTable">
+    <thead>
+    <tr>
+        <th>Fabricante</th>
+        <th>Modelo</th>
+        <th>Ano</th>
+        <th>Preço</th>
+        <th>Tipo</th>
+        <th>Combustível</th>
+        <th id="vehicleAttributeHeader">Atributo</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody id="vehiclesList">
+    <!-- Os dados dos veículos serão inseridos dinamicamente aqui -->
+    </tbody>
+</table>
+
+<!-- Modal de Adição -->
+<div id="addVehicleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('addVehicleModal')" aria-label="Fechar">&times;</span>
+        <h2>Adicionar Veículo</h2>
+        <form id="addVehicleForm" onsubmit="saveNewVehicle(event)">
+            <input type="text" id="addVehicleManufacturer" placeholder="Fabricante" required>
+            <input type="text" id="addVehicleModel" placeholder="Modelo" required>
+            <input type="number" id="addVehicleYear" placeholder="Ano" min="1886" required>
+            <input type="number" id="addVehiclePrice" placeholder="Preço" min="0" required>
+
+            <label for="addVehicleType">Tipo de Veículo</label>
+            <select id="addVehicleType" onchange="showAdditionalFields('add', this.value)" required>
+                <option value="" disabled selected>Selecione o tipo</option>
+                <option value="carro">Carro</option>
+                <option value="moto">Moto</option>
+            </select>
+
+            <div id="addAdditionalFields"></div>
+
+            <label for="addVehicleFuel">Combustível</label>
+            <select id="addVehicleFuel" required>
+                <option value="" disabled selected>Selecione o combustível</option>
+                <option value="gasolina">Gasolina</option>
+                <option value="etanol">Etanol</option>
+                <option value="flex">Flex</option>
+            </select>
+
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Edição -->
+<div id="editVehicleModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('editVehicleModal')" aria-label="Fechar">&times;</span>
+        <h2>Editar Veículo</h2>
+        <form id="editVehicleForm" onsubmit="saveEditedVehicle(event)">
+            <input type="hidden" id="editVehicleId">
+
+            <input type="text" id="editVehicleManufacturer" placeholder="Fabricante" required>
+            <input type="text" id="editVehicleModel" placeholder="Modelo" required>
+            <input type="number" id="editVehicleYear" placeholder="Ano" min="1886" required>
+            <input type="number" id="editVehiclePrice" placeholder="Preço" min="0" required>
+
+            <label for="editVehicleType">Tipo de Veículo</label>
+            <select id="editVehicleType" onchange="showAdditionalFields('edit', this.value)" required>
+                <option value="" disabled selected>Selecione o tipo</option>
+                <option value="carro">Carro</option>
+                <option value="moto">Moto</option>
+            </select>
+
+            <div id="editAdditionalFields"></div>
+
+            <label for="editVehicleFuel">Combustível</label>
+            <select id="editVehicleFuel" required>
+                <option value="" disabled selected>Selecione o combustível</option>
+                <option value="gasolina">Gasolina</option>
+                <option value="etanol">Etanol</option>
+                <option value="flex">Flex</option>
+            </select>
+
+            <button type="submit">Salvar</button>
+        </form>
+    </div>
+</div>
+
+<script src="./scripts.js"></script>
+</body>
+</html>
