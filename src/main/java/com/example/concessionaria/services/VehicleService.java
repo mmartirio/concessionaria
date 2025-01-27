@@ -32,7 +32,7 @@ public class VehicleService {
         CarModel carModel = new CarModel();
         carModel.setManufacturer(carRecordDto.manufacturer());
         carModel.setModel(carRecordDto.model());
-        carModel.setYear(carRecordDto.year());  // Alterado para year
+        carModel.setYear(carRecordDto.year());
         carModel.setPrice(carRecordDto.price());
         carModel.setFuel(carRecordDto.fuel());
         carModel.setDoors(carRecordDto.doors());
@@ -46,7 +46,7 @@ public class VehicleService {
         MotorcycleModel motorcycleModel = new MotorcycleModel();
         motorcycleModel.setManufacturer(motorcycleRecordDto.manufacturer());
         motorcycleModel.setModel(motorcycleRecordDto.model());
-        motorcycleModel.setYear(motorcycleRecordDto.year());  // Alterado para year
+        motorcycleModel.setYear(motorcycleRecordDto.year());
         motorcycleModel.setPrice(motorcycleRecordDto.price());
         motorcycleModel.setCylinder(motorcycleRecordDto.cylinder());
         motorcycleModel.setFuel(motorcycleRecordDto.fuel());
@@ -62,17 +62,19 @@ public class VehicleService {
             CarModel car = optionalCar.get();
             car.setManufacturer(carRecordDto.manufacturer());
             car.setModel(carRecordDto.model());
-            car.setYear(carRecordDto.year());  // Alterado para year
+            car.setYear(carRecordDto.year());
             car.setPrice(carRecordDto.price());
             car.setFuel(carRecordDto.fuel());
             car.setDoors(carRecordDto.doors());
 
             CarModel updatedCar = carRepository.save(car);
             return ResponseEntity.ok(updatedCar);
+
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 
     // Método para atualizar uma moto
     public MotorcycleModel updateMotorcycle(UUID id, MotorcycleRecordDto motorcycleRecordDto) {
@@ -81,7 +83,7 @@ public class VehicleService {
             MotorcycleModel motorcycle = optionalMotorcycle.get();
             motorcycle.setManufacturer(motorcycleRecordDto.manufacturer());
             motorcycle.setModel(motorcycleRecordDto.model());
-            motorcycle.setYear(motorcycleRecordDto.year());  // Alterado para year
+            motorcycle.setYear(motorcycleRecordDto.year());
             motorcycle.setPrice(motorcycleRecordDto.price());
             motorcycle.setCylinder(motorcycleRecordDto.cylinder());
 

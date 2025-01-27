@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/vehicles")
-@CrossOrigin(origins = "http://localhost:63342")  // Permite CORS para o frontend em localhost:63342
+@CrossOrigin(origins = "http://localhost:63342")
 public class VehicleController {
 
     @Autowired
@@ -32,7 +32,6 @@ public class VehicleController {
             List<CarModel> cars = vehicleService.getAllCars();
             List<MotorcycleModel> motorcycles = vehicleService.getAllMotorcycles();
 
-            // Retorna os veículos em um formato JSON usando a classe VehiclesResponse
             VehiclesResponse response = new VehiclesResponse(cars, motorcycles);
             return ResponseEntity.ok().body(response);
         } catch (Exception e) {
@@ -87,7 +86,6 @@ public class VehicleController {
     // Criação de um Carro
     @PostMapping("/createCar")
     public ResponseEntity<CarModel> createCar(@Valid @RequestBody CarRecordDto carRecordDto) {
-        // Altera o método para receber apenas o ano (year) em vez de uma data completa
         CarModel createdCar = vehicleService.createCar(carRecordDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCar);
     }
@@ -95,23 +93,21 @@ public class VehicleController {
     // Criação de uma Moto
     @PostMapping("/createMotorcycle")
     public ResponseEntity<MotorcycleModel> createMotorcycle(@Valid @RequestBody MotorcycleRecordDto motorcycleRecordDto) {
-        // Chama o serviço para criar a moto
         MotorcycleModel createdMotorcycle = vehicleService.createMotorcycle(motorcycleRecordDto);
 
-        // Retorna a resposta com status HTTP 201 CREATED
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMotorcycle);
     }
 
     // Atualização de um Carro
     @PutMapping("/updateCar/{id}")
     public ResponseEntity<CarModel> updateCar(@PathVariable UUID id, @RequestBody CarRecordDto carRecordDto) {
-        return vehicleService.updateCar(id, carRecordDto);  // Apenas repassa a chamada para o serviço
+        return vehicleService.updateCar(id, carRecordDto);
     }
 
     // Atualização de uma Moto
     @PutMapping("/updateMotorcycle/{id}")
     public MotorcycleModel updateMotorcycle(@PathVariable UUID id, @RequestBody MotorcycleRecordDto motorcycleRecordDto) {
-        return vehicleService.updateMotorcycle(id, motorcycleRecordDto);  // Apenas chama o serviço
+        return vehicleService.updateMotorcycle(id, motorcycleRecordDto);
     }
 
     // Deletar Carro
