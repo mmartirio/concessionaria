@@ -2,12 +2,24 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
+    background-color: #bbb;
+}
+
+.Container-general{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    allign-item: center;
+    flex: 1;
+    width: 98%;
+    height: 100%;
+    padding: 20px;
     background-color: #f4f4f4;
 }
 
 header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     margin-bottom: 20px;
 }
@@ -37,10 +49,16 @@ select {
     align-items: center;
 }
 
+.search-container label {
+    font-weight: 600;
+    font-size: 1.4em;
+}
+
 #search {
     margin: 0;
-    padding: 5px;
+    padding: 8px 40px;
     border: 1px solid #ccc;
+    border-color: #aaa;
 }
 
 table {
@@ -54,19 +72,13 @@ table, th, td {
 }
 
 th, td {
-    padding: 10px;
+    padding: 5px;
     text-align: center;
     text-transform: capitalize;
 }
 
 .search{
    margin: 0;
-}
-
-.btn-action{
-    display:flex;
-    justify-content: space-around;
-
 }
 
 .btn-edit {
@@ -117,8 +129,8 @@ button.edit {
     font-size: 28px;
     font-weight: bold;
     position: absolute;
-    top: 5em;
-    right: 10em;
+    top: 7em;
+    right: 23em;
 }
 
 .close:hover,
@@ -131,7 +143,7 @@ button.edit {
 #pagination {
     display: flex;
     justify-content: center;
-    margin: 5px;
+    margin: 10em 5px 5px;
 }
 
 #pagination a {

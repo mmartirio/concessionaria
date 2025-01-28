@@ -7,16 +7,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div class="Container-general">
 <header>
     <h1>Gestão de Veículos</h1>
     <button id="addVehicleButton" onclick="openAddVehicleModal()">Adicionar Veículo</button>
    <div class="search-container">
+    <label>Pesquisar</label>
     <input
             class="search"
             type="text"
             id="search"
             placeholder="Buscar veículo"
-            oninput="searchVehicles()"
+            oninput="searchVehiclesOnClick()"
             aria-label="Buscar veículo">
    </div>
 </header>
@@ -100,7 +102,7 @@
         </form>
     </div>
 </div>
-
+</div>
 <script src="./scripts.js"></script>
 </body>
 </html>

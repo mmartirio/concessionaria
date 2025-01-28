@@ -14,12 +14,15 @@ function showAdditionalFields(action, vehicleType, vehicle = null) {
         action === 'add' ? 'addAdditionalFields' : 'editAdditionalFields'
     );
 
+    // Limpa o conteúdo do container antes de adicionar novos campos
     additionalFieldsContainer.innerHTML = '';
 
     if (vehicleType === 'carro') {
+        // Adiciona o campo para "Carro"
         additionalFieldsContainer.innerHTML = `
             <input type="number" id="${action === 'add' ? 'add' : 'edit'}VehicleDoors" placeholder="Número de Portas" required ${action === 'edit' && vehicle ? `value="${vehicle.additionalFields.numDoors}"` : ''}>`;
     } else if (vehicleType === 'moto') {
+        // Adiciona o campo para "Moto"
         additionalFieldsContainer.innerHTML = `
             <input type="number" id="${action === 'add' ? 'add' : 'edit'}VehicleCylinderCapacity" placeholder="Cilindrada (CC)" required ${action === 'edit' && vehicle ? `value="${vehicle.additionalFields.engineCapacity}"` : ''}>`;
     }
@@ -27,7 +30,7 @@ function showAdditionalFields(action, vehicleType, vehicle = null) {
 
 // Função para carregar a lista de veículos
 let currentPage = 1;
-const itemsPerPage = 5;
+const itemsPerPage = 8;
 
 async function loadVehicles() {
     try {
@@ -55,22 +58,25 @@ async function loadVehicles() {
     }
 }
 
-
-function searchVehicles() {
+//Função de busca
+function searchVehiclesOnClick() {
     const input = document.getElementById('search');
     const filter = input.value.toLowerCase();
     const table = document.getElementById('vehiclesList');
     const rows = table.getElementsByTagName('tr');
 
-    for (let i = 1; i < rows.length; i++) {
+
+    for (let i = 0; i < rows.length; i++) {
         const row = rows[i];
         const cells = row.getElementsByTagName('td');
         let match = false;
+
 
         for (let j = 0; j < cells.length; j++) {
             if (cells[j]) {
                 const cellText = cells[j].textContent || cells[j].innerText;
                 const attributes = cells[j].dataset;
+
 
                 if (
                     cellText.toLowerCase().includes(filter) ||
@@ -81,6 +87,7 @@ function searchVehicles() {
                 }
             }
         }
+
 
         row.style.display = match ? '' : 'none';
     }
@@ -121,9 +128,9 @@ function displayVehicles(vehicles) {
             <td>${type}</td>
             <td>${vehicle.fuel}</td>
             <td>${vehicle.doors || vehicle.cylinder || 'N/A'}</td>
-            <td>
-                <button onclick="alert('Editar veículo: ${vehicle.idVehicle}')">Editar</button>
-                <button onclick="alert('Excluir veículo: ${vehicle.idVehicle}')">Excluir</button>
+            <td class="btn-action">
+               <button class="btn-edit" onclick="openEditVehicleModal('${vehicle.idVehicle}', '${type}')">Editar</button>
+               <button class="btn-delete" onclick="deleteVehicle('${vehicle.idVehicle}', '${type}')">Excluir</button>
             </td>
         `;
         vehiclesList.appendChild(row);
@@ -153,7 +160,6 @@ function displayVehicles(vehicles) {
     }
 }
 
-
 // Função para abrir o modal de edição
 function openEditVehicleModal(idVehicle, vehicleType) {
     // Preenche o campo de ID do veículo
@@ -162,6 +168,7 @@ function openEditVehicleModal(idVehicle, vehicleType) {
         editVehicleId.value = idVehicle;
     }
 
+    // Dependendo do tipo do veículo, preenche os outros campos
     fetch(`http://localhost:8080/vehicles/${vehicleType === 'Carro' ? 'car' : 'motorcycle'}/${idVehicle}`)
         .then(response => {
             if (!response.ok) {
@@ -200,8 +207,10 @@ function openEditVehicleModal(idVehicle, vehicleType) {
                 typeField.value = vehicleType;
             }
 
+            // Exibe campos adicionais, dependendo do tipo do veículo
             showAdditionalFields('edit', vehicleType, vehicle);
 
+            // Exibe o modal de edição
             const editVehicleModal = document.getElementById('editVehicleModal');
             if (editVehicleModal) {
                 editVehicleModal.style.display = 'block';
@@ -213,9 +222,11 @@ function openEditVehicleModal(idVehicle, vehicleType) {
         });
 }
 
-//Função para salvar as alterações de um veículo
+///////////Função para salvar as alterações de um veículo//////////////////
+async function updateVehicle(event) {
     event.preventDefault();
 
+    // Verifica se os elementos existem antes de tentar acessar o valor
     const manufacturerElement = document.getElementById('editVehicleManufacturer');
     const modelElement = document.getElementById('editVehicleModel');
     const yearElement = document.getElementById('editVehicleYear');
@@ -225,12 +236,14 @@ function openEditVehicleModal(idVehicle, vehicleType) {
     const doorsElement = document.getElementById('editVehicleDoors');
     const cylinderElement = document.getElementById('editVehicleCylinderCapacity');
 
+    // Verifica se todos os elementos do formulário estão presentes
     if (!manufacturerElement || !modelElement || !yearElement || !priceElement || !vehicleTypeElement || !fuelElement) {
         console.error('Erro: um ou mais campos obrigatórios não foram encontrados.');
         alert('Erro ao acessar os campos do formulário. Tente novamente mais tarde.');
         return;
     }
 
+    // Obtém os valores dos campos
     const manufacturer = manufacturerElement.value;
     const model = modelElement.value;
     const year = yearElement.value;
@@ -240,21 +253,25 @@ function openEditVehicleModal(idVehicle, vehicleType) {
 
     let additionalData = {};
 
+// Adiciona dados adicionais de acordo com o tipo de veículo
     if (vehicleType === 'carro' && doorsElement) {
         const doors = doorsElement.value;
-        additionalData = { ...additionalData, doors };
+        additionalData = { ...additionalData, doors };  // Adiciona 'doors' ao objeto existente
     } else if (vehicleType === 'moto' && cylinderElement) {
         const cylinder = cylinderElement.value;
-        additionalData = { ...additionalData, cylinder };
+        additionalData = { ...additionalData, cylinder };  // Adiciona 'cylinder' ao objeto existente
     }
 
+    // Obtém o ID do veículo sendo editado
     const vehicleId = document.getElementById('editVehicleId').value;
 
+    // Define a URL da API com base no tipo de veículo
     const url =
         vehicleType === 'carro'
             ? `http://localhost:8080/vehicles/updateCar/${vehicleId}`
             : `http://localhost:8080/vehicles/updateMotorcycle/${vehicleId}`;
 
+    // Dados a serem enviados
     const payload = {
         manufacturer,
         model,
@@ -264,7 +281,8 @@ function openEditVehicleModal(idVehicle, vehicleType) {
         ...additionalData,
     };
 
-    tr
+    try {
+        // Envia a requisição para a API
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
@@ -276,8 +294,9 @@ function openEditVehicleModal(idVehicle, vehicleType) {
         if (response.ok) {
             alert('Veículo atualizado com sucesso!');
             closeModal('editVehicleModal');
+            // Limpar formulário e atualizar lista de veículos (opcional)
             document.getElementById('editVehicleForm').reset();
-            loadVehicles();
+            loadVehicles(); // Recarrega a lista de veículos
         } else {
             const errorData = await response.json();
             console.error('Erro ao atualizar veículo:', errorData);
@@ -289,14 +308,16 @@ function openEditVehicleModal(idVehicle, vehicleType) {
     }
 }
 
+// Configuração inicial
 document.addEventListener('DOMContentLoaded', () => {
     loadVehicles(); // Carrega a lista de veículos ao carregar a página
 });
 
-//Função para salvar um novo veículo
+/////////////////Função para salvar um novo veículo//////////////////////////
 async function saveNewVehicle(event) {
     event.preventDefault();
 
+    // Obtém os valores do formulário
     const manufacturer = document.getElementById('addVehicleManufacturer').value;
     const model = document.getElementById('addVehicleModel').value;
     const year = document.getElementById('addVehicleYear').value;
@@ -314,11 +335,13 @@ async function saveNewVehicle(event) {
         additionalData = { cylinder };
     }
 
+    // Define a URL da API com base no tipo de veículo
     const url =
         vehicleType === 'carro'
             ? 'http://localhost:8080/vehicles/createCar'
             : 'http://localhost:8080/vehicles/createMotorcycle';
 
+    // Dados a serem enviados
     const payload = {
         manufacturer,
         model,
@@ -329,6 +352,7 @@ async function saveNewVehicle(event) {
     };
 
     try {
+        // Envia a requisição para a API
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -340,6 +364,7 @@ async function saveNewVehicle(event) {
         if (response.ok) {
             alert('Veículo adicionado com sucesso!');
             closeModal('addVehicleModal');
+            // Limpar formulário e atualizar lista de veículos (opcional)
             document.getElementById('addVehicleForm').reset();
             loadVehicles(); // Recarrega a lista de veículos
         } else {
@@ -353,31 +378,37 @@ async function saveNewVehicle(event) {
     }
 }
 
+// Executa uma configuração inicial para exibir "Número de Portas" como padrão
 document.addEventListener('DOMContentLoaded', () => {
     showAdditionalFields('add', 'carro');
-    loadVehicles();
+    loadVehicles(); // Carrega a lista de veículos ao carregar a página
 });
 
-//Função para excluir um veiculo
+///////////////Função para excluir um veiculo///////////////
 async function deleteVehicle(vehicleId, vehicleType) {
+    // Confirmação antes de excluir o veículo
     const confirmation = confirm("Tem certeza de que deseja excluir este veículo?");
 
     if (confirmation) {
+        // Define a URL da API com base no tipo de veículo
         const url =
             vehicleType === 'Carro'
                 ? `http://localhost:8080/vehicles/deleteCar/${vehicleId}`
                 : `http://localhost:8080/vehicles/deleteMotorcycle/${vehicleId}`;
 
+        // Adiciona um log para verificar a URL
         console.log("URL de exclusão:", url);
 
         try {
+            // Envia a requisição para a API
             const response = await fetch(url, {
                 method: 'DELETE',
             });
 
             if (response.ok) {
                 alert('Veículo excluído com sucesso!');
-                loadVehicles();
+                // Atualiza a lista de veículos na interface (opcional)
+                loadVehicles(); // Recarrega a lista de veículos
             } else {
                 const errorData = await response.json();
                 console.error('Erro ao excluir veículo:', errorData);
