@@ -1,6 +1,3 @@
-Entendi! Vou atualizar a estrutura do projeto para refletir os nomes corretos dos arquivos na pasta `dto`.
-
----
 
 # Concessionária
 
