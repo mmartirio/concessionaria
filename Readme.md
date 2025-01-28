@@ -177,8 +177,4 @@ Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para ma
 
 ## Contato
 
-Se você tiver alguma dúvida ou sugestão, entre em contato através do e-mail: seu-email@dominio.com.
-
----
-
-Espero que isso atenda às suas expectativas! Se precisar de mais alguma coisa, é só avisar.
+Se você tiver alguma dúvida ou sugestão, entre em contato através do e-mail: marcos.martirio@gmail.com.
