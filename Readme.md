@@ -46,6 +46,11 @@ Este projeto é uma aplicação para a gestão de uma concessionária fictícia,
    spring.datasource.url=jdbc:mysql://localhost:3306/concessionaria
    spring.datasource.username=seu_usuario
    spring.datasource.password=sua_senha
+   spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+   spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
+   spring.jpa.properties.hibernate.format_sql=true
+   debug=true
    ```
 4. Execute o script de criação do banco de dados localizado em `src/main/resources/concessionaria.sql` para criar as tabelas necessárias.
 
